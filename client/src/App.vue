@@ -14,6 +14,7 @@
 @import "./assets/scss/footer.scss";
 @import './assets/scss/home.scss';
 @import './assets/scss/single.scss';
-@import './assets/scss/menu.scss'
+@import './assets/scss/menu.scss';
+@import './assets/scss/write.scss';
 
 </style>
