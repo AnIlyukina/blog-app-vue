@@ -1,8 +1,19 @@
 <script setup></script>
 
 <template>
-  <router-view></router-view>
+  <div class="app">
+    <div class="app__container">
+      <router-view></router-view>
+    </div>
+  </div>
 </template>
 
-<style scoped>
+<style lang="scss">
+@import "./assets/scss/auth.scss";
+@import "./assets/scss/navbar.scss";
+@import "./assets/scss/footer.scss";
+@import './assets/scss/home.scss';
+@import './assets/scss/single.scss';
+@import './assets/scss/menu.scss'
+
 </style>

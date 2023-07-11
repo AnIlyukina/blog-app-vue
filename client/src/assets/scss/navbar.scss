@@ -1,0 +1,49 @@
+.navbar {
+  &__container {
+    padding: 10px 0px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &__logo{
+    width: 50px;
+    height: 50px;
+  }
+  &__links{
+    display: flex;
+    align-items: center;
+    list-style-type: none;
+    gap: 15px;
+    a {
+      font-weight: 300;
+    }
+  }
+
+  &__user-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    span {
+      cursor: pointer;
+    }
+    .write {
+
+      a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #b9e7e7;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: 1px solid white;
+      }
+      a:hover {
+        color: teal;
+        background-color: white;
+        border: 1px solid teal;
+      }
+    }
+  }
+}
