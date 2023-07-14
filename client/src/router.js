@@ -15,20 +15,15 @@ const routes = [
     component: Layout,
     children: [
       {
-        // UserProfile will be rendered inside User's <router-view>
-        // when /user/:id/profile is matched
         path: '',
+        name: 'Home',
         component: Home,
       },
       {
-        // UserProfile will be rendered inside User's <router-view>
-        // when /user/:id/profile is matched
         path: 'post/:id',
         component: Single,
       },
       {
-        // UserPosts will be rendered inside User's <router-view>
-        // when /user/:id/posts is matched
         path: 'write',
         component: Write,
       },
