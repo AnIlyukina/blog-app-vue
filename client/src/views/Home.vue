@@ -1,7 +1,9 @@
 <script setup>
-import { onMounted, reactive, watchEffect } from "vue";
-import axios from "axios";
-import {useRoute} from 'vue-router'
+import { onMounted, ref,reactive, watchEffect } from "vue";
+
+import { useRoute } from 'vue-router';
+
+import api from '../api.js'
 
 const route = useRoute();
 
@@ -10,16 +12,17 @@ let posts = reactive([]);
 const getPosts = async (category) => {
   console.log(category)
   try {
-    let response = await axios.get('http://localhost:8800/api/posts', {
+    let response = await api.get('/posts', {
       params: category
     });
     return response.data
   } catch (e) {}
 };
 
-watchEffect(async () => {
-  let category = route.query
-  posts = await getPosts(category)
+watchEffect(async() => {
+  let category = route.query;
+  let pos = await getPosts(category)
+  Object.assign(posts, pos)
   console.log(posts, 'posts')
 })
 
@@ -37,7 +40,7 @@ watchEffect(async () => {
             <h1>
               {{ post.title }}
             </h1>
-            <p>{{ post.desc }}</p>
+            <p>{{ post.description }}</p>
             <button>Read More</button>
           </router-link>
         </div>

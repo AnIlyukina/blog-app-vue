@@ -2,7 +2,9 @@
 import { reactive, ref } from "vue";
 import axios from "axios";
 
-import { useRouter } from 'vue-router'
+import api from '../api.js'
+
+import { useRouter } from "vue-router";
 
 let user = reactive({
   name: "",
@@ -10,30 +12,29 @@ let user = reactive({
   password: "",
 });
 
-
-const router = useRouter()
-let error = ref('');
+const router = useRouter();
+let error = ref("");
 
 const register = async (e) => {
   e.preventDefault();
 
   try {
-    await axios.post(
-      "http://localhost:8800/api/auth/register",
-      user
-    );
+    await api.post("/auth/register", user);
 
-    router.push({ path: '/'})
+    router.push({ path: "/" });
     console.log(response, "response");
   } catch (err) {
-    error.value = err.response.data
+    error.value = err.response.data;
   }
 };
 </script>
 
 <template>
   <div class="auth">
-    <h1 class="auth__title">Register</h1>
+    <div class="auth__logo">
+      <img src="/src/assets/image/logo.png" class="logo" alt="Logo" />
+      <h1 class="title">Register</h1>
+    </div>
     <form class="auth__form">
       <input
         v-model="user.name"
@@ -60,7 +61,7 @@ const register = async (e) => {
       <p v-show="error">{{ error }}</p>
       <span
         >Don't you have an account?
-        <router-link to="/login">Login</router-link>
+        <router-link to="/login" class="link-btn">Login</router-link>
       </span>
     </form>
   </div>
