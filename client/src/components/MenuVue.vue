@@ -1,30 +1,30 @@
 <script setup>
-const posts = [
-  {
-    id: 1,
-    title: "Lorem ipsum dolor sit amet consectetur adipisicing elit",
-    desc: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. A possimus excepturi aliquid nihil cumque ipsam facere aperiam at! Ea dolorem ratione sit debitis deserunt repellendus numquam ab vel perspiciatis corporis!",
-    img: "https://mossebo.studio/wp-content/uploads/image-2.jpg",
-  },
-  {
-    id: 2,
-    title: "Lorem ipsum dolor sit amet consectetur adipisicing elit",
-    desc: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. A possimus excepturi aliquid nihil cumque ipsam facere aperiam at! Ea dolorem ratione sit debitis deserunt repellendus numquam ab vel perspiciatis corporis!",
-    img: "https://mossebo.studio/wp-content/uploads/image-2.jpg",
-  },
-  {
-    id: 3,
-    title: "Lorem ipsum dolor sit amet consectetur adipisicing elit",
-    desc: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. A possimus excepturi aliquid nihil cumque ipsam facere aperiam at! Ea dolorem ratione sit debitis deserunt repellendus numquam ab vel perspiciatis corporis!",
-    img: "https://mossebo.studio/wp-content/uploads/image-2.jpg",
-  },
-  {
-    id: 4,
-    title: "Lorem ipsum dolor sit amet consectetur adipisicing elit",
-    desc: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. A possimus excepturi aliquid nihil cumque ipsam facere aperiam at! Ea dolorem ratione sit debitis deserunt repellendus numquam ab vel perspiciatis corporis!",
-    img: "https://mossebo.studio/wp-content/uploads/image-2.jpg",
+
+import { toRefs, ref, watch } from 'vue';
+
+import api from '../api.js'
+
+const props = defineProps({
+  category: String
+})
+
+const { category } = toRefs(props)
+
+const recommendedPosts = ref([])
+
+const getRecommendedPost = async () => {
+  try {
+    const response = await api.get(`/posts/?category=${category.value}`)
+    return response.data
+  } catch (e) {
+    console.log(e)
   }
-];
+}
+
+watch(category, async () => {
+  recommendedPosts.value = await getRecommendedPost()
+})
+
 </script>
 
 <template>
@@ -32,7 +32,7 @@ const posts = [
     <h1>Other posts you may like</h1>
     <ul>
       <li
-        v-for="post in posts"
+        v-for="post in recommendedPosts"
         :key="post.id"
         class="post"
       >

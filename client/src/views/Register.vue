@@ -7,7 +7,7 @@ import api from '../api.js'
 import { useRouter } from "vue-router";
 
 let user = reactive({
-  name: "",
+  username: "",
   email: "",
   password: "",
 });
@@ -37,7 +37,7 @@ const register = async (e) => {
     </div>
     <form class="auth__form">
       <input
-        v-model="user.name"
+        v-model="user.username"
         name="username"
         required
         type="text"

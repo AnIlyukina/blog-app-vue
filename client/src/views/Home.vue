@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref,reactive, watchEffect } from "vue";
+import { ref, reactive, watchEffect, onMounted, watch, computed } from "vue";
 
 import { useRoute } from 'vue-router';
 
@@ -7,10 +7,9 @@ import api from '../api.js'
 
 const route = useRoute();
 
-let posts = reactive([]);
+let posts = ref([]);
 
 const getPosts = async (category) => {
-  console.log(category)
   try {
     let response = await api.get('/posts', {
       params: category
@@ -19,11 +18,17 @@ const getPosts = async (category) => {
   } catch (e) {}
 };
 
-watchEffect(async() => {
-  let category = route.query;
-  let pos = await getPosts(category)
-  Object.assign(posts, pos)
-  console.log(posts, 'posts')
+const category = computed(() => route.query)
+
+onMounted(async () => {
+  posts.value = await getPosts(category.value)
+})
+
+
+watch(category, async (value) => {
+  if (value) {
+    posts.value = await getPosts(category.value)
+  }
 })
 
 </script>

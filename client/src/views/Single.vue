@@ -1,41 +1,79 @@
 <script setup>
-import MenuVue from '../components/MenuVue.vue'
+import MenuVue from '../components/MenuVue.vue';
+
+import moment from 'moment';
+
+import { onMounted, ref } from 'vue';
+
+import { useRoute, useRouter } from 'vue-router';
+
+import api from '../api.js';
+
+const  route = useRoute();
+
+const  router = useRouter();
+
+const postId = route.params.id;
+
+const post = ref({})
+
+const currentUser = JSON.parse(localStorage.getItem('user'));
+
+const getPostById = async () => {
+  try {
+    const response = await api.get(`posts/${postId}`)
+    return response.data
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+onMounted(async () => {
+  post.value = await getPostById()
+})
+
+const deletePost = async () => {
+  try {
+    await api.delete(`posts/${postId}`)
+    router.push({name: "Home"})
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+
 
 </script>
 
 <template>
   <div class="single-page">
     <div class="single-page__content">
-      <img src="https://oir.mobi/uploads/posts/2021-03/1616746892_54-p-minimalizm-krasivo-58.jpg" alt="post-image"/>
+      <img v-if="post.img" :src="post.img" alt="post-image"/>
 
       <div class="user">
-        <img src="https://pibig.info/uploads/posts/2022-12/1669944289_1-pibig-info-p-krasivie-oboi-na-rabochii-stol-minimalizm-3.jpg" alt="user-logo">
+        <img v-if="post.userImg" :src="post.userImg" alt="user-logo">
         <div class="info">
-          <span>John</span>
-          <p>Posted 2 days ago</p>
+          <span>{{ post.username }}</span>
+          <p>Posted {{ moment(post.date).fromNow() }}</p>
         </div>
-        <div class="edit">
+        <div 
+          v-show="currentUser.username === post.username"
+          class="edit">
           <router-link :to="'/write?edit=2'">
             <img src="/src/assets/image/edit.png" alt="edit">
           </router-link>
-          <img src="/src/assets/image/rubbish-bin.png" alt="delete">
+          <img @click="deletePost" src="/src/assets/image/rubbish-bin.png" alt="delete">
         </div>
       </div>
       <h1>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+        {{ post.title }}
       </h1>
       <p>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. A possimus excepturi aliquid nihil cumque ipsam facere aperiam at! Ea dolorem ratione sit debitis deserunt repellendus numquam ab vel perspiciatis corporis!Lorem, ipsum dolor sit amet consectetur adipisicing elit. A possimus excepturi aliquid nihil cumque ipsam facere aperiam at! Ea dolorem ratione sit debitis deserunt repellendus numquam ab vel perspiciatis corporis!Lorem, ipsum dolor sit amet consectetur adipisicing elit. A possimus excepturi aliquid nihil cumque ipsam facere aperiam at! Ea dolorem ratione sit debitis deserunt repellendus numquam ab vel perspiciatis corporis!
-        <br/>
-        <br/>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. A possimus excepturi aliquid nihil cumque ipsam facere aperiam at! Ea dolorem ratione sit debitis deserunt repellendus numquam ab vel perspiciatis corporis!Lorem, ipsum dolor sit amet consectetur adipisicing elit. A possimus excepturi aliquid nihil cumque ipsam facere aperiam at! Ea dolorem ratione sit debitis deserunt repellendus numquam ab vel perspiciatis corporis!Lorem, ipsum dolor sit amet consectetur adipisicing elit. A possimus excepturi aliquid nihil cumque ipsam facere aperiam at! Ea dolorem ratione sit debitis deserunt repellendus numquam ab vel perspiciatis corporis!
-        <br/>
-        <br/>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. A possimus excepturi aliquid nihil cumque ipsam facere aperiam at! Ea dolorem ratione sit debitis deserunt repellendus numquam ab vel perspiciatis corporis!Lorem, ipsum dolor sit amet consectetur adipisicing elit. A possimus excepturi aliquid nihil cumque ipsam facere aperiam at! Ea dolorem ratione sit debitis deserunt repellendus numquam ab vel perspiciatis corporis!Lorem, ipsum dolor sit amet consectetur adipisicing elit. A possimus excepturi aliquid nihil cumque ipsam facere aperiam at! Ea dolorem ratione sit debitis deserunt repellendus numquam ab vel perspiciatis corporis!Lorem, ipsum dolor sit amet consectetur adipisicing elit. A possimus excepturi aliquid nihil cumque ipsam facere aperiam at! Ea dolorem ratione sit debitis deserunt repellendus numquam ab vel perspiciatis corporis!Lorem, ipsum dolor sit amet consectetur adipisicing elit. A possimus excepturi aliquid nihil cumque ipsam facere aperiam at! Ea dolorem ratione sit debitis deserunt repellendus numquam ab vel perspiciatis corporis!Lorem, ipsum dolor sit amet consectetur adipisicing elit. A possimus excepturi aliquid nihil cumque ipsam facere aperiam at! Ea dolorem ratione sit debitis deserunt repellendus numquam ab vel perspiciatis corporis!
+        {{ post.description }}
       </p>
     </div>
     <div class="single-page__menu">
-      <menu-vue/>
+      <menu-vue :category="post.category"/>
     </div>
   </div>
 </template>

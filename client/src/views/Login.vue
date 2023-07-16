@@ -5,7 +5,7 @@ import api from "../api.js";
 import { useRouter } from "vue-router";
 
 let user = reactive({
-  name: "",
+  username: "",
   password: "",
 });
 
@@ -36,7 +36,7 @@ const login = async (e) => {
       <h1 class="title">Login</h1>
     </div>
     <form class="auth__form">
-      <input v-model="user.name" type="text" placeholder="username" />
+      <input v-model="user.username" type="text" placeholder="username" />
       <input v-model="user.password" type="password" placeholder="password" />
       <button @click="login">Login</button>
       <p v-show="error">{{ error }}</p>

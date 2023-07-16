@@ -43,7 +43,7 @@ const logout = async () => {
         </li>
       </ul>
       <div class="navbar__user-info">
-        <span>{{currentUser ? currentUser.name : Незнакомец}}</span>
+        <span>{{currentUser ? currentUser.username : Незнакомец}}</span>
         <span @click="logout">Logout</span>
         <span class="write">
           <router-link to="/write">
