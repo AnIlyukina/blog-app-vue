@@ -17,7 +17,7 @@ export const getPosts = (req, res) => {
 
 export const getPost = (req, res) => {
   const query =
-    "SELECT `username`, `title`, `description`, p.img, u.img AS userImg, `category`, `date` FROM users u JOIN posts p ON u.id=p.uid WHERE p.id = ?";
+    "SELECT p.id, `username`, `title`, `description`, p.img, u.img AS userImg, `category`, `date` FROM users u JOIN posts p ON u.id=p.uid WHERE p.id = ?";
 
   db.query(query, [req.params.id], (err, data) => {
     if (err) return res.status(500).json(err)

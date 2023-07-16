@@ -1,20 +1,20 @@
 <script setup>
-import { ref, reactive } from "vue";
+import { reactive } from "vue";
 
 import { QuillEditor } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 // import '@vueup/vue-quill/dist/vue-quill.bubble.css';
-
 import api from "../api.js";
 
-const newPost = reactive({
-  title: "",
-  category: "",
-  file: null,
-  description: "",
-})
+const state = history.state.post
 
-const file = ref(null)
+const newPost = reactive({
+  title: state?.title || "",
+  category: state?.category || "",
+  file: null,
+  description: state?.description || "",
+})
+//console.log("History.state before pushState: ", history.state);
 
 
 const setFile = (e) => {
@@ -41,10 +41,23 @@ const savePost = async (e) => {
   const imgUrl = await upload()
 
   try {
+    if (state) {
+      updatePost()
+    } else {
+      createPost()
+    }
 
   } catch (err) {
     console.log(err)
   }
+  
+}
+
+const createPost = () => {
+
+}
+
+const updatePost = () => {
   
 }
 </script>
@@ -77,17 +90,18 @@ const savePost = async (e) => {
       <li class="menu__item">
         <h1>Category</h1>
         <div class="cat">
-          <input type="radio" name="category" value="art" id="art" @change="setCategory"/>
+          <input v-model="newPost.category" type="radio" name="category" value="art" id="art" @change="setCategory"/>
           <label for="art">Art</label>
         </div>
 
         <div class="cat">
-          <input type="radio" name="category" value="science" id="science" @change="setCategory"/>
+          <input v-model="newPost.category" type="radio" name="category" value="science" id="science" @change="setCategory"/>
           <label for="science">Science</label>
         </div>
 
         <div class="cat">
           <input
+            v-model="newPost.category"
             type="radio"
             name="category"
             value="technology"
@@ -97,17 +111,17 @@ const savePost = async (e) => {
         </div>
 
         <div class="cat">
-          <input type="radio" name="category" value="cinema" id="cinema" @change="setCategory"/>
+          <input v-model="newPost.category" type="radio" name="category" value="cinema" id="cinema" @change="setCategory"/>
           <label for="cinema">Cinema</label>
         </div>
 
         <div class="cat">
-          <input type="radio" name="category" value="design" id="design" @change="setCategory"/>
+          <input v-model="newPost.category" type="radio" name="category" value="design" id="design" @change="setCategory"/>
           <label for="design">Design</label>
         </div>
 
         <div class="cat">
-          <input type="radio" name="category" value="food" id="food" @change="setCategory"/>
+          <input v-model="newPost.category" type="radio" name="category" value="food" id="food" @change="setCategory"/>
           <label for="food">Food</label>
         </div>
       </li>

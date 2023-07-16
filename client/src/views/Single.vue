@@ -42,6 +42,9 @@ const deletePost = async () => {
 }
 
 
+const editPost = () => {
+  router.push({ name: 'Write', state: { post: {...post.value}} })
+}
 
 </script>
 
@@ -59,9 +62,7 @@ const deletePost = async () => {
         <div 
           v-show="currentUser.username === post.username"
           class="edit">
-          <router-link :to="'/write?edit=2'">
-            <img src="/src/assets/image/edit.png" alt="edit">
-          </router-link>
+          <img @click="editPost" src="/src/assets/image/edit.png" alt="edit">
           <img @click="deletePost" src="/src/assets/image/rubbish-bin.png" alt="delete">
         </div>
       </div>

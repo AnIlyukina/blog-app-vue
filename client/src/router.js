@@ -15,16 +15,18 @@ const routes = [
     component: Layout,
     children: [
       {
-        path: '',
-        name: 'Home',
+        path: "",
+        name: "Home",
         component: Home,
       },
       {
-        path: 'post/:id',
+        path: "post/:id",
         component: Single,
       },
       {
-        path: 'write',
+        name: "Write",
+        props: route => ({ post: route.params.post }),
+        path: "write",
         component: Write,
       },
     ],
