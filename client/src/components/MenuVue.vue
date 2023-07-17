@@ -36,7 +36,7 @@ watch(category, async () => {
         :key="post.id"
         class="post"
       >
-        <img :src="post.img" alt="post-image">
+        <img :src="`../upload/${post.img}`" alt="post-image">
         <h2>{{ post.title }}</h2>
         <button>Read More</button>
       </li>

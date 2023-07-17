@@ -28,8 +28,52 @@ export const getPost = (req, res) => {
 };
 
 export const addPost = (req, res) => {
-  res.json();
+  const token = req.cookies.access_token;
+  if (!token) return res.status(401).json("Не авторизован");
+
+  jwt.verify(token, "jwtkey", (err, userInfo) => {
+    if (err) return res.status(403).json("Не валидный токен");
+
+    const query = "INSERT INTO posts(`title`, `description`, `img`,`category`, `date`, `uid`) VALUES (?)"
+    const values = [
+      req.body.title,
+      req.body.description,
+      req.body.img,
+      req.body.category,
+      req.body.date,
+      userInfo.id
+    ]
+    db.query(query, [values], (err, date) => {
+      if (err) return res.status(500).json(err);
+      return res.status(201).json("Пост создан")
+    })
+  });
 };
+
+export const updatePost = (req, res) => {
+  const token = req.cookies.access_token;
+  if (!token) return res.status(401).json("Не авторизован");
+
+  jwt.verify(token, "jwtkey", (err, userInfo) => {
+    if (err) return res.status(403).json("Не валидный токен");
+
+
+    const postId = req.params.id
+    const query =
+      "UPDATE posts SET `title`=?, `description`=?, `img`=?,`category`=? WHERE `id` = ? AND `uid` = ?";
+    const values = [
+      req.body.title,
+      req.body.description,
+      req.body.img,
+      req.body.category,
+    ];
+    db.query(query, [...values, postId, userInfo.id], (err, date) => {
+      if (err) return res.status(500).json(err);
+      return res.status(201).json("Пост обновлен");
+    });
+  });
+};
+
 export const deletePost = (req, res) => {
   const token = req.cookies.access_token
   if (!token) return res.status(401).json("Не авторизован")
@@ -46,7 +90,4 @@ export const deletePost = (req, res) => {
       return res.json("Пост был удален")
     });
   })
-};
-export const updatePost = (req, res) => {
-  res.json();
 };

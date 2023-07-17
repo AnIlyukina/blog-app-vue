@@ -31,6 +31,11 @@ watch(category, async (value) => {
   }
 })
 
+const getText = (html) => {
+  const doc = new DOMParser().parseFromString(html, 'text/html')
+  return doc.body.textContent
+}
+
 </script>
 
 <template>
@@ -38,14 +43,14 @@ watch(category, async (value) => {
     <ul class="home__posts">
       <li v-for="post in posts" :key="post.id" class="home__post">
         <div class="img">
-          <img :src="post.img" alt="post-image" />
+          <img :src="`./upload/${post.img}`" alt="post-image" />
         </div>
         <div class="content">
           <router-link class="link" :to="'/post/' + post.id">
             <h1>
               {{ post.title }}
             </h1>
-            <p>{{ post.description }}</p>
+            <p>{{ getText(post.description) }}</p>
             <button>Read More</button>
           </router-link>
         </div>

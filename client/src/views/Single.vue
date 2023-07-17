@@ -32,6 +32,12 @@ onMounted(async () => {
   post.value = await getPostById()
 })
 
+const getText = (html) => {
+  const doc = new DOMParser().parseFromString(html, 'text/html')
+  console.log(doc)
+  return doc.body.textContent
+}
+
 const deletePost = async () => {
   try {
     await api.delete(`posts/${postId}`)
@@ -51,7 +57,7 @@ const editPost = () => {
 <template>
   <div class="single-page">
     <div class="single-page__content">
-      <img v-if="post.img" :src="post.img" alt="post-image"/>
+      <img v-if="post.img" :src="`../upload/${post.img}`" alt="post-image"/>
 
       <div class="user">
         <img v-if="post.userImg" :src="post.userImg" alt="user-logo">
@@ -70,7 +76,7 @@ const editPost = () => {
         {{ post.title }}
       </h1>
       <p>
-        {{ post.description }}
+        {{ getText(post.description) }}
       </p>
     </div>
     <div class="single-page__menu">
